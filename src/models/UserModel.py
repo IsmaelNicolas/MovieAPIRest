@@ -21,8 +21,8 @@ class UserModel():
         #u = User(id=str(res.uid),name=str(res.display_name),email=str(res.email))
         ref = db.reference()
         users = ref.child('users').get()
-
-        for user in users.values():
+        for user in users.values() :
+            #print(user)
             if(user['email']==email):
                 return user 
 
@@ -30,24 +30,27 @@ class UserModel():
 
     @classmethod
     def add_user(self,us):
-        user = auth.create_user(
-            email=us['email'],
-            email_verified=False,
-            password= Utils.txt2Sha3(us['password']),
-            display_name=us['name'],
-            disabled=False
-        )
         ref = db.reference('users')
-
         new_user = {
             'username': us['name'],
             'email': us['email'],
             'password': Utils.txt2Sha3(us['password']),
-            'moviegenres': us['moviegenres'],
+            'birth': Utils.getAge(us['birth']),
             'joined': str(datetime.now().strftime('%d/%m/%Y'))
         }
 
-        ref.push().set(new_user)
+        ref.push().set( new_user)
 
-   
+    @classmethod
+    def verifyUser(self,email,password):
+
+        user = UserModel.get_user_email(email)
+        if('message' in user):
+            return "Not found"
+        else:
+            if(user['password'] == Utils.txt2Sha3(password)):
+                return user
+            else:
+                return "Cretendials incorrects"
+
     

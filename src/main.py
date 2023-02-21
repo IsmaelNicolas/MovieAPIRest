@@ -51,16 +51,8 @@ def delete_node(path):
     print(e)
 
 # Creamos un nuevo nodo en la base de datos
-create_node('users/1', {'name': 'John', 'age': 30,'genres':['triller','action']})
+create_node('reviews', {'userId': 'NNsJZAucqlBvLlig3Vm', 'movieId': '411','user_score':'4','user_comment':'It is amazing','date_score':'2023/2/9'})
 
-# Leemos el nodo que acabamos de crear
-read_node('users/1')
-
-# Actualizamos el nodo
-update_node('users/1', {'name': 'Jane', 'age': 31})
-
-# Leemos el nodo de nuevo
-read_node('users/1')
 
 # Borramos el nodo
 #delete_node('users/1')

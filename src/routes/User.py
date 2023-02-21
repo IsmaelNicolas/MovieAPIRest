@@ -8,7 +8,7 @@ def get_user():
     try:
         em = request.json['email']
         u = UserModel.get_user_email(email=em)
-        
+        print(u)
         return jsonify(u),200 
 
     except Exception as e:
@@ -21,14 +21,15 @@ def add_user():
         email = request.json['email']
         name = request.json['name']
         password = request.json['password']
-        moviegenres = request.json['moviegenres']
+        birth = request.json['birth']
         
         us = {  
             'email':email,
             'name': name,
             'password':password,
-            'moviegenres':moviegenres
+            'birth':birth
         }
+        print("new_user",us)
 
         UserModel.add_user(us)
 
@@ -36,3 +37,23 @@ def add_user():
 
     except Exception as ex:
         return jsonify({'messagee':str(ex)}),404
+
+@main.route('/auth',methods=['POST'])
+def authUser():
+
+    try:
+        
+        email = request.json['email']
+        password = request.json['password']
+        condition = UserModel.verifyUser(email=email,password=password)
+
+        if(condition == "Not found" or condition == "Cretendials incorrects"):
+            return jsonify({'message':condition}),404
+        else:
+            return jsonify(condition),200 
+
+
+    except Exception as ex:
+        return jsonify({'messagee':str(ex)}),404
+
+
